@@ -110,9 +110,10 @@ def main():
         save_total_limit=3,
         bf16=(device == "cuda"),
         fp16=False,
-        max_seq_length=512,
+        max_length=512,
         packing=False,
     )
+
 
     trainer = SFTTrainer(
         model=model,
