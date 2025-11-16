@@ -64,8 +64,7 @@ def formatting_func(examples):
     texts = []
     for inp, out in zip(examples["input"], examples["output"]):
         prompt = build_prompt(inp)
-        # out уже строка с JSON, просто приклеиваем
-        full = prompt + "\n" + out
+        full = prompt + "\n" + out  # out уже строка с JSON
         texts.append(full)
     return texts
 
@@ -86,8 +85,9 @@ def main():
     )
 
     model.to(device)
+    model.config.use_cache = False  # важно для тренировки с gradient checkpointing / LoRA
 
-    # LoRA-конфиг (под Phi-3, целевые модули могут немного отличаться)
+    # LoRA-конфиг (если что-то упадёт, можно подправить target_modules под реальные имена слоёв)
     lora_config = LoraConfig(
         r=16,
         lora_alpha=32,
