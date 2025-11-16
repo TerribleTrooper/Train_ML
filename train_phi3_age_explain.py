@@ -117,11 +117,12 @@ def main():
 
     trainer = SFTTrainer(
         model=model,
-        tokenizer=tokenizer,
-        train_dataset=dataset,
         args=training_args,
+        train_dataset=dataset,
+        processing_class=tokenizer,
         formatting_func=formatting_func,
     )
+
 
     trainer.train()
     trainer.save_model(OUTPUT_DIR)
