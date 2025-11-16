@@ -59,14 +59,15 @@ def build_prompt(input_text: str) -> str:
         + "\n\nОтветь ОДНИМ JSON-объектом:"
     )
 
-def formatting_func(examples):
-    """Готовим текст вида: [PROMPT]\n[ОЖИДАЕМЫЙ_JSON]"""
-    texts = []
-    for inp, out in zip(examples["input"], examples["output"]):
-        prompt = build_prompt(inp)
-        full = prompt + "\n" + out  # out уже строка с JSON
-        texts.append(full)
-    return texts
+def formatting_func(example):
+    """
+    Принимает ОДИН пример: {"input": ..., "output": ...}
+    и возвращает одну строку.
+    """
+    prompt = build_prompt(example["input"])
+    full = prompt + "\n" + example["output"]
+    return full
+
 
 def main():
     device = "cuda" if torch.cuda.is_available() else "cpu"
@@ -114,15 +115,13 @@ def main():
         packing=False,
     )
 
-
     trainer = SFTTrainer(
         model=model,
         args=training_args,
         train_dataset=dataset,
-        processing_class=tokenizer,
+        processing_class=tokenizer,  # вместо tokenizer=tokenizer
         formatting_func=formatting_func,
     )
-
 
     trainer.train()
     trainer.save_model(OUTPUT_DIR)
