@@ -12,7 +12,7 @@ from trl import SFTTrainer, SFTConfig
 
 BASE_MODEL = "microsoft/phi-3-mini-4k-instruct"
 OUTPUT_DIR = "./output_phi3_lora"
-DATA_PATH = "./train.jsonl"
+DATA_PATH = "./age_dataset.jsonl"
 
 SYSTEM_PROMPT = (
     "Твоя задача — анализировать текст и присваивать ему возрастной рейтинг.\n"
